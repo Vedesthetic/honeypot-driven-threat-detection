@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+cowrie-env/
+
+# Secrets
+.env
+*.pem
+*.key
+*.crt
+
+# Logs
+*.log
+var/log/
+var/lib/cowrie/
+
+# OS
+.DS_Store
