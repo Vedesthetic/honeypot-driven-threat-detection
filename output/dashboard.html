@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Honeypot Threat Detection Dashboard</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #0b0f14;
+    color: #e6edf3;
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 32px;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.subtitle {
+    margin-top: 8px;
+    color: #8b949e;
+}
+
+.grid {
+    display: grid;
+    gap: 18px;
+}
+
+.summary-grid {
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+}
+
+.card {
+    background: #111820;
+    border: 1px solid #26313c;
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.metric-label {
+    color: #8b949e;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.metric-value {
+    margin-top: 8px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.section-grid {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.section-title {
+    margin: 0 0 18px 0;
+    font-size: 18px;
+}
+
+.severity-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, 1fr);
+    gap: 12px;
+}
+
+.severity-card {
+    padding: 18px;
+    border-radius: 10px;
+    background: #161d25;
+    border: 1px solid #26313c;
+}
+
+.severity-name {
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: #8b949e;
+}
+
+.severity-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.critical {
+    border-color: #8b2635;
+}
+
+.high {
+    border-color: #8b5a26;
+}
+
+.medium {
+    border-color: #756c25;
+}
+
+.low {
+    border-color: #315d78;
+}
+
+.bar-row {
+    display: grid;
+    grid-template-columns:
+        150px 1fr 45px;
+    align-items: center;
+    gap: 10px;
+    margin: 11px 0;
+}
+
+.bar-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.bar-track {
+    height: 9px;
+    background: #202a34;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #3b82f6;
+    border-radius: 99px;
+}
+
+.bar-value {
+    text-align: right;
+    color: #8b949e;
+    font-size: 13px;
+}
+
+.incident {
+    border: 1px solid #3a2027;
+    background: #171115;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.incident-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    color: #ff7b8a;
+}
+
+.incident-top span {
+    color: #8b949e;
+    font-size: 12px;
+}
+
+.incident-source {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #c9d1d9;
+}
+
+code {
+    color: #79c0ff;
+}
+
+.tags {
+    margin-top: 12px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 3px;
+    border-radius: 5px;
+    background: #252b33;
+    color: #c9d1d9;
+    font-size: 11px;
+}
+
+.empty {
+    color: #8b949e;
+}
+
+footer {
+    margin-top: 30px;
+    color: #6e7681;
+    font-size: 12px;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+
+    .summary-grid,
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .severity-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>Honeypot Threat Detection</h1>
+    <div class="subtitle">
+        Cowrie SSH telemetry &amp; threat intelligence dashboard
+    </div>
+</header>
+
+<!-- Summary -->
+
+<div class="grid summary-grid">
+
+    <div class="card">
+        <div class="metric-label">Events</div>
+        <div class="metric-value">
+            512
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="metric-label">Incidents</div>
+        <div class="metric-value">
+            27
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="metric-label">Source IPs</div>
+        <div class="metric-value">
+            63
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="metric-label">Sessions</div>
+        <div class="metric-value">
+            117
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Severity -->
+
+<div class="card" style="margin-top:18px">
+
+    <h2 class="section-title">Alert Severity</h2>
+
+    <div class="severity-grid">
+        
+        <div class="severity-card critical">
+            <div class="severity-name">CRITICAL</div>
+            <div class="severity-value">4</div>
+        </div>
+        
+
+        <div class="severity-card high">
+            <div class="severity-name">HIGH</div>
+            <div class="severity-value">0</div>
+        </div>
+        
+
+        <div class="severity-card medium">
+            <div class="severity-name">MEDIUM</div>
+            <div class="severity-value">8</div>
+        </div>
+        
+
+        <div class="severity-card low">
+            <div class="severity-name">LOW</div>
+            <div class="severity-value">15</div>
+        </div>
+        
+    </div>
+
+</div>
+
+
+<!-- Countries / IPs -->
+
+<div class="grid section-grid">
+
+    <div class="card">
+        <h2 class="section-title">
+            Top Attacking Countries
+        </h2>
+
+        
+        <div class="bar-row">
+            <div class="bar-label">CN</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:100%"></div>
+            </div>
+            <div class="bar-value">143</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">NL</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:79%"></div>
+            </div>
+            <div class="bar-value">114</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">US</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:27%"></div>
+            </div>
+            <div class="bar-value">40</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">LT</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:22%"></div>
+            </div>
+            <div class="bar-value">32</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">HK</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:17%"></div>
+            </div>
+            <div class="bar-value">25</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">SG</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:17%"></div>
+            </div>
+            <div class="bar-value">25</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">IN</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:15%"></div>
+            </div>
+            <div class="bar-value">22</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">KR</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:11%"></div>
+            </div>
+            <div class="bar-value">16</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">CA</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:9%"></div>
+            </div>
+            <div class="bar-value">14</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">FI</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:9%"></div>
+            </div>
+            <div class="bar-value">13</div>
+        </div>
+        
+    </div>
+
+
+    <div class="card">
+        <h2 class="section-title">
+            Top Source IPs
+        </h2>
+
+        
+        <div class="bar-row">
+            <div class="bar-label">51.158.205.203</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:100%"></div>
+            </div>
+            <div class="bar-value">44</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">130.12.180.51</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:90%"></div>
+            </div>
+            <div class="bar-value">40</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">77.90.185.17</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:63%"></div>
+            </div>
+            <div class="bar-value">28</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">111.7.172.14</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:40%"></div>
+            </div>
+            <div class="bar-value">18</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">127.0.0.1</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:31%"></div>
+            </div>
+            <div class="bar-value">14</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">106.222.204.239</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:31%"></div>
+            </div>
+            <div class="bar-value">14</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">49.7.233.106</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:29%"></div>
+            </div>
+            <div class="bar-value">13</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">77.239.124.130</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:27%"></div>
+            </div>
+            <div class="bar-value">12</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">66.132.195.111</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:25%"></div>
+            </div>
+            <div class="bar-value">11</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">43.100.87.69</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:22%"></div>
+            </div>
+            <div class="bar-value">10</div>
+        </div>
+        
+    </div>
+
+</div>
+
+
+<!-- Passwords / usernames -->
+
+<div class="grid section-grid">
+
+    <div class="card">
+        <h2 class="section-title">
+            Most Attempted Passwords
+        </h2>
+
+        
+        <div class="bar-row">
+            <div class="bar-label">admin</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:100%"></div>
+            </div>
+            <div class="bar-value">12</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">------fuck------</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:58%"></div>
+            </div>
+            <div class="bar-value">7</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">---fuck_you----</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:33%"></div>
+            </div>
+            <div class="bar-value">4</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">support</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:33%"></div>
+            </div>
+            <div class="bar-value">4</div>
+        </div>
+        
+    </div>
+
+
+    <div class="card">
+        <h2 class="section-title">
+            Most Used Usernames
+        </h2>
+
+        
+        <div class="bar-row">
+            <div class="bar-label">root</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:100%"></div>
+            </div>
+            <div class="bar-value">16</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">admin</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:62%"></div>
+            </div>
+            <div class="bar-value">10</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">support</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:25%"></div>
+            </div>
+            <div class="bar-value">4</div>
+        </div>
+        
+    </div>
+
+</div>
+
+
+<!-- Techniques -->
+
+<div class="card" style="margin-top:18px">
+
+    <h2 class="section-title">
+        Detection Techniques
+    </h2>
+
+    
+        <div class="bar-row">
+            <div class="bar-label">successful-login</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:100%"></div>
+            </div>
+            <div class="bar-value">24</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">post-login-activity</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:70%"></div>
+            </div>
+            <div class="bar-value">17</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">reconnaissance</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:54%"></div>
+            </div>
+            <div class="bar-value">13</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">post-login-forwarding</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:29%"></div>
+            </div>
+            <div class="bar-value">7</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">ssh-forwarding</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:29%"></div>
+            </div>
+            <div class="bar-value">7</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">multi-stage-source</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:20%"></div>
+            </div>
+            <div class="bar-value">5</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">credential-theft</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:16%"></div>
+            </div>
+            <div class="bar-value">4</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">executable-file</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:16%"></div>
+            </div>
+            <div class="bar-value">4</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">file-download</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:16%"></div>
+            </div>
+            <div class="bar-value">4</div>
+        </div>
+        
+
+        <div class="bar-row">
+            <div class="bar-label">file-transfer</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:16%"></div>
+            </div>
+            <div class="bar-value">4</div>
+        </div>
+        
+
+</div>
+
+
+<!-- Critical incidents -->
+
+<div class="card" style="margin-top:18px">
+
+    <h2 class="section-title">
+        Critical Incidents
+    </h2>
+
+    
+        <div class="incident">
+            <div class="incident-top">
+                <strong>Risk 100</strong>
+                <span>2026-09-14T09:45:10.651944Z</span>
+            </div>
+
+            <div class="incident-source">
+                Source: <strong>130.12.180.51</strong>
+                &nbsp; | &nbsp;
+                Session: <code>f89158ba16a2</code>
+            </div>
+
+            <div class="tags">
+                <span class='tag'>credential-theft</span> <span class='tag'>executable-file</span> <span class='tag'>file-download</span> <span class='tag'>file-transfer</span> <span class='tag'>multi-stage-source</span> <span class='tag'>payload-download</span> <span class='tag'>payload-execution</span> <span class='tag'>post-login-activity</span>
+            </div>
+        </div>
+        
+
+        <div class="incident">
+            <div class="incident-top">
+                <strong>Risk 100</strong>
+                <span>2026-09-12T15:43:56.700428Z</span>
+            </div>
+
+            <div class="incident-source">
+                Source: <strong>130.12.180.51</strong>
+                &nbsp; | &nbsp;
+                Session: <code>2869a6ef9952</code>
+            </div>
+
+            <div class="tags">
+                <span class='tag'>credential-theft</span> <span class='tag'>executable-file</span> <span class='tag'>file-download</span> <span class='tag'>file-transfer</span> <span class='tag'>multi-stage-source</span> <span class='tag'>payload-download</span> <span class='tag'>payload-execution</span> <span class='tag'>post-login-activity</span>
+            </div>
+        </div>
+        
+
+        <div class="incident">
+            <div class="incident-top">
+                <strong>Risk 100</strong>
+                <span>2026-09-13T01:06:27.467104Z</span>
+            </div>
+
+            <div class="incident-source">
+                Source: <strong>130.12.180.51</strong>
+                &nbsp; | &nbsp;
+                Session: <code>763860fbe620</code>
+            </div>
+
+            <div class="tags">
+                <span class='tag'>credential-theft</span> <span class='tag'>executable-file</span> <span class='tag'>file-download</span> <span class='tag'>file-transfer</span> <span class='tag'>multi-stage-source</span> <span class='tag'>payload-download</span> <span class='tag'>payload-execution</span> <span class='tag'>post-login-activity</span>
+            </div>
+        </div>
+        
+
+        <div class="incident">
+            <div class="incident-top">
+                <strong>Risk 100</strong>
+                <span>2026-09-13T23:42:32.013222Z</span>
+            </div>
+
+            <div class="incident-source">
+                Source: <strong>130.12.180.51</strong>
+                &nbsp; | &nbsp;
+                Session: <code>88a8f62a3ff7</code>
+            </div>
+
+            <div class="tags">
+                <span class='tag'>credential-theft</span> <span class='tag'>executable-file</span> <span class='tag'>file-download</span> <span class='tag'>file-transfer</span> <span class='tag'>multi-stage-source</span> <span class='tag'>payload-download</span> <span class='tag'>payload-execution</span> <span class='tag'>post-login-activity</span>
+            </div>
+        </div>
+        
+
+</div>
+
+
+<footer>
+    Generated from Cowrie normalized events, AbuseIPDB enrichment,
+    and the custom detection engine.
+</footer>
+
+</div>
+
+</body>
+</html>

@@ -134,7 +134,7 @@ def iso_timestamp(value: Any) -> str | None:
 def base_event(raw):
     return {
         "timestamp": iso_timestamp(raw.get("timestamp")),
-        "session_id": raw.get("session"),
+        "session": raw.get("session"),
         "event_type": raw.get("eventid"),
         "protocol": raw.get("protocol"),
         "source_ip": raw.get("src_ip"),

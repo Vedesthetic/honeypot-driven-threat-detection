@@ -1,0 +1,397 @@
+{
+  "summary": {
+    "total_events": 512,
+    "total_alerts": 27,
+    "unique_source_ips": 63,
+    "unique_sessions": 117
+  },
+  "severity": {
+    "low": 15,
+    "medium": 8,
+    "critical": 4
+  },
+  "attack_trends": [
+    {
+      "date": "2026-09-12",
+      "events": 158
+    },
+    {
+      "date": "2026-09-13",
+      "events": 224
+    },
+    {
+      "date": "2026-09-14",
+      "events": 130
+    }
+  ],
+  "top_source_ips": [
+    {
+      "value": "51.158.205.203",
+      "count": 44
+    },
+    {
+      "value": "130.12.180.51",
+      "count": 40
+    },
+    {
+      "value": "77.90.185.17",
+      "count": 28
+    },
+    {
+      "value": "111.7.172.14",
+      "count": 18
+    },
+    {
+      "value": "127.0.0.1",
+      "count": 14
+    },
+    {
+      "value": "106.222.204.239",
+      "count": 14
+    },
+    {
+      "value": "49.7.233.106",
+      "count": 13
+    },
+    {
+      "value": "77.239.124.130",
+      "count": 12
+    },
+    {
+      "value": "66.132.195.111",
+      "count": 11
+    },
+    {
+      "value": "43.100.87.69",
+      "count": 10
+    }
+  ],
+  "top_countries": [
+    {
+      "value": "CN",
+      "count": 143
+    },
+    {
+      "value": "NL",
+      "count": 114
+    },
+    {
+      "value": "US",
+      "count": 40
+    },
+    {
+      "value": "LT",
+      "count": 32
+    },
+    {
+      "value": "HK",
+      "count": 25
+    },
+    {
+      "value": "SG",
+      "count": 25
+    },
+    {
+      "value": "IN",
+      "count": 22
+    },
+    {
+      "value": "KR",
+      "count": 16
+    },
+    {
+      "value": "CA",
+      "count": 14
+    },
+    {
+      "value": "FI",
+      "count": 13
+    }
+  ],
+  "top_passwords": [
+    {
+      "value": "admin",
+      "count": 12
+    },
+    {
+      "value": "------fuck------",
+      "count": 7
+    },
+    {
+      "value": "---fuck_you----",
+      "count": 4
+    },
+    {
+      "value": "support",
+      "count": 4
+    }
+  ],
+  "top_usernames": [
+    {
+      "value": "root",
+      "count": 16
+    },
+    {
+      "value": "admin",
+      "count": 10
+    },
+    {
+      "value": "support",
+      "count": 4
+    }
+  ],
+  "top_techniques": [
+    {
+      "value": "successful-login",
+      "count": 24
+    },
+    {
+      "value": "post-login-activity",
+      "count": 17
+    },
+    {
+      "value": "reconnaissance",
+      "count": 13
+    },
+    {
+      "value": "post-login-forwarding",
+      "count": 7
+    },
+    {
+      "value": "ssh-forwarding",
+      "count": 7
+    },
+    {
+      "value": "multi-stage-source",
+      "count": 5
+    },
+    {
+      "value": "credential-theft",
+      "count": 4
+    },
+    {
+      "value": "executable-file",
+      "count": 4
+    },
+    {
+      "value": "file-download",
+      "count": 4
+    },
+    {
+      "value": "file-transfer",
+      "count": 4
+    }
+  ],
+  "top_alert_tags": [
+    {
+      "value": "successful-login",
+      "count": 24
+    },
+    {
+      "value": "post-login-activity",
+      "count": 17
+    },
+    {
+      "value": "reconnaissance",
+      "count": 13
+    },
+    {
+      "value": "post-login-forwarding",
+      "count": 7
+    },
+    {
+      "value": "ssh-forwarding",
+      "count": 7
+    },
+    {
+      "value": "multi-stage-source",
+      "count": 5
+    },
+    {
+      "value": "credential-theft",
+      "count": 4
+    },
+    {
+      "value": "executable-file",
+      "count": 4
+    },
+    {
+      "value": "file-download",
+      "count": 4
+    },
+    {
+      "value": "file-transfer",
+      "count": 4
+    }
+  ],
+  "critical_incidents": [
+    {
+      "timestamp": "2026-09-14T09:45:10.651944Z",
+      "session": "f89158ba16a2",
+      "source_ip": "130.12.180.51",
+      "event_type": "cowrie.login.success",
+      "severity": "critical",
+      "risk_score": 100,
+      "tags": [
+        "credential-theft",
+        "executable-file",
+        "file-download",
+        "file-transfer",
+        "multi-stage-source",
+        "payload-download",
+        "payload-execution",
+        "post-login-activity",
+        "post-login-download",
+        "remote-access",
+        "remote-code-execution",
+        "shell-execution",
+        "successful-login"
+      ],
+      "evidence": [
+        "Successful login followed by command execution",
+        "Successful login followed by file download",
+        "Source exhibited 3 different suspicious behavior types",
+        "Remote payload downloaded and immediately executed",
+        "Content piped directly to shell",
+        "Private SSH key material created",
+        "Downloaded executable prepared for shell execution",
+        "Payload/download activity using wget",
+        "Payload/download activity using curl",
+        "Remote file transfer using scp",
+        "Remote SSH activity",
+        "File made executable"
+      ],
+      "event_types": [
+        "cowrie.command.input",
+        "cowrie.login.success",
+        "cowrie.session.file_download"
+      ]
+    },
+    {
+      "timestamp": "2026-09-12T15:43:56.700428Z",
+      "session": "2869a6ef9952",
+      "source_ip": "130.12.180.51",
+      "event_type": "cowrie.login.success",
+      "severity": "critical",
+      "risk_score": 100,
+      "tags": [
+        "credential-theft",
+        "executable-file",
+        "file-download",
+        "file-transfer",
+        "multi-stage-source",
+        "payload-download",
+        "payload-execution",
+        "post-login-activity",
+        "post-login-download",
+        "remote-access",
+        "remote-code-execution",
+        "shell-execution",
+        "successful-login"
+      ],
+      "evidence": [
+        "Successful login followed by command execution",
+        "Successful login followed by file download",
+        "Source exhibited 3 different suspicious behavior types",
+        "Remote payload downloaded and immediately executed",
+        "Content piped directly to shell",
+        "Private SSH key material created",
+        "Downloaded executable prepared for shell execution",
+        "Payload/download activity using wget",
+        "Payload/download activity using curl",
+        "Remote file transfer using scp",
+        "Remote SSH activity",
+        "File made executable"
+      ],
+      "event_types": [
+        "cowrie.command.input",
+        "cowrie.login.success",
+        "cowrie.session.file_download"
+      ]
+    },
+    {
+      "timestamp": "2026-09-13T01:06:27.467104Z",
+      "session": "763860fbe620",
+      "source_ip": "130.12.180.51",
+      "event_type": "cowrie.login.success",
+      "severity": "critical",
+      "risk_score": 100,
+      "tags": [
+        "credential-theft",
+        "executable-file",
+        "file-download",
+        "file-transfer",
+        "multi-stage-source",
+        "payload-download",
+        "payload-execution",
+        "post-login-activity",
+        "post-login-download",
+        "remote-access",
+        "remote-code-execution",
+        "shell-execution",
+        "successful-login"
+      ],
+      "evidence": [
+        "Successful login followed by command execution",
+        "Successful login followed by file download",
+        "Source exhibited 3 different suspicious behavior types",
+        "Remote payload downloaded and immediately executed",
+        "Content piped directly to shell",
+        "Private SSH key material created",
+        "Downloaded executable prepared for shell execution",
+        "Payload/download activity using wget",
+        "Payload/download activity using curl",
+        "Remote file transfer using scp",
+        "Remote SSH activity",
+        "File made executable"
+      ],
+      "event_types": [
+        "cowrie.command.input",
+        "cowrie.login.success",
+        "cowrie.session.file_download"
+      ]
+    },
+    {
+      "timestamp": "2026-09-13T23:42:32.013222Z",
+      "session": "88a8f62a3ff7",
+      "source_ip": "130.12.180.51",
+      "event_type": "cowrie.login.success",
+      "severity": "critical",
+      "risk_score": 100,
+      "tags": [
+        "credential-theft",
+        "executable-file",
+        "file-download",
+        "file-transfer",
+        "multi-stage-source",
+        "payload-download",
+        "payload-execution",
+        "post-login-activity",
+        "post-login-download",
+        "remote-access",
+        "remote-code-execution",
+        "shell-execution",
+        "successful-login"
+      ],
+      "evidence": [
+        "Successful login followed by command execution",
+        "Successful login followed by file download",
+        "Source exhibited 3 different suspicious behavior types",
+        "Remote payload downloaded and immediately executed",
+        "Content piped directly to shell",
+        "Private SSH key material created",
+        "Downloaded executable prepared for shell execution",
+        "Payload/download activity using wget",
+        "Payload/download activity using curl",
+        "Remote file transfer using scp",
+        "Remote SSH activity",
+        "File made executable"
+      ],
+      "event_types": [
+        "cowrie.command.input",
+        "cowrie.login.success",
+        "cowrie.session.file_download"
+      ]
+    }
+  ]
+}
